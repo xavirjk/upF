@@ -3,7 +3,6 @@ const models = require('../models');
 exports.postNewPCODE = async (req, res, next) => {
   try {
     const { body } = req;
-    console.log('body', body);
     const upF = await models.upF.createOne(body);
 
     if (upF) {
