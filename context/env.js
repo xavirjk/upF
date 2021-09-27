@@ -5,4 +5,6 @@ module.exports = {
   PORT: envVar.PORT,
   MONGO_URI: envVar.MONGO_URI,
   SESSION_SECRET: envVar.SESSION_SECRET,
+  EMAIL: envVar.EMAIL,
+  PASS: envVar.PASSWORD,
 };

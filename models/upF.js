@@ -23,7 +23,6 @@ const { statics, methods } = upFSchema;
 
 statics.createOne = async function (data) {
   const hashedPCODE = await hashedCode(data.PCODE);
-  console.log(hashedPCODE);
   return await this.create({ pcode: hashedPCODE });
 };
 

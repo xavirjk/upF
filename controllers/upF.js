@@ -1,14 +1,22 @@
 const models = require('../models');
-
+const { Esender } = require('../services');
 exports.postNewPCODE = async (req, res, next) => {
   try {
-    const { body } = req;
+    const { body, headers } = req;
+    const ref = extractRefAsBearer(headers.reference);
     const upF = await models.upF.createOne(body);
-
     if (upF) {
-      await models.Ver.createOne({ upf_id: upF.id, code: activationCode() });
+      var code = activationCode();
+      const result = await Esender(ref, code)
+        .then((success) => success)
+        .catch((err) => {
+          res.status(501).send({ message: 'Not created, Mailing failed' });
+          return null;
+        });
+      if (!result) return;
+      await models.Ver.createOne({ upf_id: upF.id, code: code });
       res.status(201).send({ message: 'PCODE success' });
-    } else res.status(304).send({ messsage: 'PCODE Not created' });
+    } else res.status(304).send({ message: 'PCODE Not created' });
   } catch (error) {
     next(error);
   }
